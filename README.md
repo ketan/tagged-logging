@@ -1,4 +1,4 @@
-# TaggedLogging
+# TaggedLogging [![Build Status](https://travis-ci.org/ketan/tagged-logging.png?branch=master)](https://travis-ci.org/ketan/tagged-logging)
 
 The rails tagged logger is awesome, but it's only available in rails. This gem makes it available for non-rails applications
 
