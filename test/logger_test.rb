@@ -4,15 +4,9 @@ require 'tagged_logging/blank_ext'
 
 class LoggerTest < Test::Unit::TestCase
 
-  class MyLogger
-    include TaggedLogging
-  end
-
   setup do
     @output = StringIO.new
-    @logger = MyLogger
-    @logger.logger    = ::Logger.new(@output)
-    @logger.logger.formatter = TaggedLogging::Formatter.new
+    @logger = TaggedLogging.new(::Logger.new(@output))
     @logger.flush
   end
 

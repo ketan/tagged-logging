@@ -1,6 +1,6 @@
 # TaggedLogging [![Build Status](https://travis-ci.org/ketan/tagged-logging.png?branch=master)](https://travis-ci.org/ketan/tagged-logging)
 
-The rails tagged logger is awesome, but it's only available in rails. This gem makes it available for non-rails applications
+The rails tagged logger is awesome, but it's only available in rails. This gem makes it available for non-rails applications.
 
 ## Installation
 
@@ -19,71 +19,36 @@ Or install it yourself as:
 ## Usage
 
 ```{ruby}
-    class MyApplication
-      include TaggedLogging
-      push_tags(MyApplication, Process.pid)
+    logger = TaggedLogging.new(Logger.new(STDERR))
 
-      def initialize
-        info('Initializing application')
-      end
+    logger.tagged('MyApplication', Process.pid) do |l|
+      l.debug 'Initializing application'
 
-      def perform
-        tagged("Perform") do
-          info("performing some task")
-        end
-      end
-
-      at_exit do
-        info('Exiting application')
+      tagged("Perform") do
+        info("performing some task")
       end
     end
-
-    app = MyApplication.new
-    app.perform
 ```
 
 The above will print the following:
 
     [2012-12-15T14:52:10+05:30] - INFO - [MyApplication] [11321] - Initializing application
     [2012-12-15T14:52:10+05:30] - INFO - [MyApplication] [11321] [Perform] - performing some task
-    [2012-12-15T14:52:10+05:30] - INFO - [MyApplication] [11321] - Exiting application
 
-If you'd rather prefer to not pollute your class with the logger methods:
+You can also push and pop tags as required to the same effect
+
 ```{ruby}
-  class MyApplication
-    class MyLogger
-      include TaggedLogging
-    end
+    logger = TaggedLogging.new(Logger.new(STDERR))
 
-    class <<self
-      attr_accessor :logger
-    end
+    logger.push_tags('MyApplication', Po)
+      l.debug 'Initializing application'
 
-    def logger
-      self.class.logger
-    end
-
-    self.logger = MyLogger
-    logger.push_tags(MyApplication, Process.pid)
-
-    def initialize
-      logger.info('Initializing application')
-    end
-
-    def perform
-      logger.tagged("Perform") do
-        logger.info("performing some task")
+      tagged("Perform") do
+        info("performing some task")
       end
     end
-
-    at_exit do
-      logger.info('Exiting application')
-    end
-  end
-
-  app = MyApplication.new
-  app.perform
 ```
+
 
 ## Contributing
 

@@ -1,4 +1,6 @@
 require 'time'
+require 'tagged_logging/blank_ext'
+
 module TaggedLogging
   class Formatter < ::Logger::Formatter
 
@@ -15,6 +17,13 @@ module TaggedLogging
               msg.inspect
             end
       FORMAT % [format_datetime(time), severity, tags_text, msg]
+    end
+
+    def tagged(*tags)
+      new_tags = push_tags(*tags)
+      yield self
+    ensure
+      pop_tags(tags.size)
     end
 
     def push_tags(*tags)
