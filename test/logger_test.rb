@@ -12,17 +12,17 @@ class LoggerTest < Test::Unit::TestCase
 
   test "tagged once" do
     @logger.tagged("BCX") { @logger.info "Funky time" }
-    assert_match "INFO - [BCX] - Funky time\n", @output.string
+    assert_match "INFO  - [BCX] - Funky time\n", @output.string
   end
 
   test "tagged twice" do
     @logger.tagged("BCX") { @logger.tagged("Jason") { @logger.info "Funky time" } }
-    assert_match "INFO - [BCX] [Jason] - Funky time\n", @output.string
+    assert_match "INFO  - [BCX] [Jason] - Funky time\n", @output.string
   end
 
   test "tagged thrice at once" do
     @logger.tagged("BCX", "Jason", "New") { @logger.info "Funky time" }
-    assert_match "INFO - [BCX] [Jason] [New] - Funky time", @output.string
+    assert_match "INFO  - [BCX] [Jason] [New] - Funky time", @output.string
   end
 
   test "tagged are flattened" do
@@ -45,20 +45,20 @@ class LoggerTest < Test::Unit::TestCase
     assert_equal [], @logger.clear_tags!
     @logger.info 'd'
 
-    assert_match "INFO - [A] [B] [C] - a", @output.string
-    assert_match "INFO - [A] [B] - b", @output.string
-    assert_match "INFO - [A] - c", @output.string
-    assert_match "INFO -  - d", @output.string
+    assert_match "INFO  - [A] [B] [C] - a", @output.string
+    assert_match "INFO  - [A] [B] - b", @output.string
+    assert_match "INFO  - [A] - c", @output.string
+    assert_match "INFO  -  - d", @output.string
   end
 
   test "does not strip message content" do
     @logger.info " \t\t Hello"
-    assert_match "INFO -  -  \t\t Hello\n", @output.string
+    assert_match "INFO  -  -  \t\t Hello\n", @output.string
   end
 
   test "tagged once with blank and nil" do
     @logger.tagged(nil, "", "New") { @logger.info "Funky time" }
-    assert_match "INFO - [New] - Funky time", @output.string
+    assert_match "INFO  - [New] - Funky time", @output.string
   end
 
   test "keeps each tag in their own thread" do
@@ -68,8 +68,8 @@ class LoggerTest < Test::Unit::TestCase
       end.join
       @logger.info "Funky time"
     end
-    assert_match "INFO - [OMG] - Cool story bro", @output.string
-    assert_match "INFO - [BCX] - Funky time\n", @output.string
+    assert_match "INFO  - [OMG] - Cool story bro", @output.string
+    assert_match "INFO  - [BCX] - Funky time\n", @output.string
   end
 
   test "cleans up the taggings on flush" do
@@ -81,7 +81,7 @@ class LoggerTest < Test::Unit::TestCase
         end
       end.join
     end
-    assert_match "INFO -  - Cool story bro", @output.string
+    assert_match "INFO  -  - Cool story bro", @output.string
   end
 
   test "mixed levels of tagging" do
@@ -90,8 +90,8 @@ class LoggerTest < Test::Unit::TestCase
       @logger.info "Junky time!"
     end
 
-    assert_match "INFO - [BCX] [Jason] - Funky time", @output.string
-    assert_match "INFO - [BCX] - Junky time!", @output.string
+    assert_match "INFO  - [BCX] [Jason] - Funky time", @output.string
+    assert_match "INFO  - [BCX] - Junky time!", @output.string
   end
 
 end

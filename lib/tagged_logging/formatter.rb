@@ -4,7 +4,7 @@ require 'tagged_logging/blank_ext'
 module TaggedLogging
   class Formatter < ::Logger::Formatter
 
-    FORMAT = "[%s] - %4s - %s - %s\n"
+    FORMAT = "[%s] - %-5s - %s - %s\n"
 
     def call(severity, time, progname, msg)
       str = case msg
