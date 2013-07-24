@@ -1,6 +1,7 @@
 require 'test_helper'
 require 'tagged_logging/formatter'
 require 'tagged_logging/blank_ext'
+require 'stringio'
 
 class LoggerTest < Test::Unit::TestCase
 
